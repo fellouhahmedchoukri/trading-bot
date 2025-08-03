@@ -1,11 +1,10 @@
-// server/websocket-fix.js
 import ws from 'ws';
 
-// Fix pour les environnements ES Modules
+// Fix global pour les environnements ES Modules
 global.WebSocket = ws.WebSocket;
 global.WebSocketServer = ws.WebSocketServer;
 
-// Méthode alternative de création
+// Méthode de création alternative
 ws.createWebSocketServer = (options) => new ws.WebSocketServer(options);
 
 export default ws;
