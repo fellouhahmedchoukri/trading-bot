@@ -9,6 +9,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export function setupRoutes(app) {
+  // Redirection de la racine vers le dashboard
+  app.get('/', (req, res) => {
+    res.redirect('/dashboard');
+  });
+
   // Webhook TradingView
   app.post('/webhook', authenticateWebhook, async (req, res) => {
     try {
@@ -48,5 +53,10 @@ export function setupRoutes(app) {
   // Route pour servir l'index du dashboard
   app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(dashboardPath, 'index.html'));
+  });
+  
+  // Gestion des erreurs 404
+  app.use((req, res) => {
+    res.status(404).send('Page non trouvée');
   });
 }
