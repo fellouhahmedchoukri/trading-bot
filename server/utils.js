@@ -1,10 +1,10 @@
-import WebSocket from 'ws';
-import { getDashboardData } from './db.js';
+import ws from 'ws';
+const { WebSocketServer } = ws;
 
 let wss = null;
 
 export function initWebSocket(server) {
-  wss = new WebSocket.Server({ server });
+  wss = new WebSocketServer({ server });
   
   wss.on('connection', (ws) => {
     sendDashboardUpdate(ws);
@@ -18,7 +18,7 @@ export function broadcastDashboardUpdate() {
   
   getDashboardData().then(data => {
     wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
+      if (client.readyState === 1) { // 1 = OPEN
         client.send(JSON.stringify({
           type: 'dashboard_update',
           data
@@ -40,6 +40,10 @@ async function sendDashboardUpdate(ws) {
   }
 }
 
+// Import nécessaire
+import { getDashboardData } from './db.js';
+
+// Gestion des erreurs critiques
 process.on('uncaughtException', error => {
   console.error('CRITICAL ERROR:', error);
 });
