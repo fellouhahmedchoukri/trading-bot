@@ -28,10 +28,31 @@ async function initDB(db) {
     );
     
     INSERT OR IGNORE INTO settings (id) VALUES (1);
+    
+    CREATE TABLE IF NOT EXISTS signals (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+      action TEXT NOT NULL,
+      symbol TEXT NOT NULL,
+      level INTEGER,
+      price REAL,
+      message TEXT
+    );
+    
+    CREATE TABLE IF NOT EXISTS orders (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+      order_id TEXT,
+      symbol TEXT NOT NULL,
+      side TEXT NOT NULL,
+      type TEXT NOT NULL,
+      quantity REAL NOT NULL,
+      price REAL NOT NULL,
+      status TEXT NOT NULL
+    );
   `);
 }
 
-// CORRECTION : Ajout des exports manquants
 export async function getSettings() {
   const db = await getDB();
   const settings = await db.get('SELECT * FROM settings WHERE id = 1');
