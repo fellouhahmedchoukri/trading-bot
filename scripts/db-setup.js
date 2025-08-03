@@ -6,32 +6,22 @@ const DB_DIR = isProduction ? '/data' : path.resolve(process.cwd());
 const DB_PATH = path.join(DB_DIR, 'trading.db');
 
 try {
-  // Créer le dossier s'il n'existe pas
-  if (!fs.existsSync(DB_DIR)) {
-    fs.mkdirSync(DB_DIR, { recursive: true });
-    console.log(`📂 Dossier créé: ${DB_DIR}`);
-  }
-
-  // Créer le fichier s'il n'existe pas
-  if (!fs.existsSync(DB_PATH)) {
-    fs.writeFileSync(DB_PATH, '');
-    console.log(`📄 Fichier DB créé: ${DB_PATH}`);
-  } else {
-    console.log(`ℹ️ Fichier DB existant: ${DB_PATH}`);
-  }
-
-  // Définir les permissions
-  if (isProduction) {
-    try {
-      fs.chmodSync(DB_PATH, 0o666);
-      console.log(`🔒 Permissions définies: 0666`);
-    } catch (chmodError) {
-      console.warn('⚠️ Impossible de modifier les permissions:', chmodError.message);
+    // Créer le dossier s'il n'existe pas
+    if (!fs.existsSync(DB_DIR)) {
+        fs.mkdirSync(DB_DIR, { recursive: true });
+        console.log(`📂 Dossier créé: ${DB_DIR}`);
     }
-  }
-  
-  console.log('✅ Configuration DB terminée');
+
+    // Créer le fichier s'il n'existe pas
+    if (!fs.existsSync(DB_PATH)) {
+        fs.writeFileSync(DB_PATH, '');
+        console.log(`📄 Fichier DB créé: ${DB_PATH}`);
+    } else {
+        console.log(`ℹ️ Fichier DB existant: ${DB_PATH}`);
+    }
+
+    console.log('✅ Configuration DB terminée');
 } catch (error) {
-  console.error('❌ Erreur configuration DB:', error);
-  process.exit(1);
+    console.error('❌ Erreur configuration DB:', error);
+    process.exit(1);
 }
