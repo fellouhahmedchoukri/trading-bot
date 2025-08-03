@@ -1,10 +1,10 @@
-import ws from 'ws';
+import { WebSocketServer } from './ws-compat.js';
+import { getDashboardData } from './db.js';
 
 let wss = null;
 
 export function initWebSocket(server) {
-  // Utilisation directe de ws.Server
-  wss = new ws.Server({ server });
+  wss = new WebSocketServer({ server });
   
   wss.on('connection', (ws) => {
     sendDashboardUpdate(ws);
@@ -40,10 +40,6 @@ async function sendDashboardUpdate(ws) {
   }
 }
 
-// Import nécessaire
-import { getDashboardData } from './db.js';
-
-// Gestion des erreurs critiques
 process.on('uncaughtException', error => {
   console.error('CRITICAL ERROR:', error);
 });
