@@ -1,3 +1,24 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const app = express();
+app.use(helmet());
+app.use(morgan('combined'));
+app.use(express.json());
+
+// Initialisation
+setupRoutes(app);
+
+const PORT = process.env.PORT || 3000;
+const server = app.listen(PORT, () => {
+  console.log(`🚀 Serveur démarré sur le port ${PORT}`);
+  console.log(`⚙️ Mode: ${process.env.ENVIRONMENT} | ${process.env.TRADING_MODE}`);
+});
+
+
+
+
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -21,3 +42,4 @@ app.listen(PORT, () => {
   console.log(`🚀 Serveur démarré sur le port ${PORT}`);
   console.log(`⚙️ Mode: ${process.env.ENVIRONMENT} | ${process.env.TRADING_MODE}`);
 });
+
