@@ -99,6 +99,7 @@ async function initDB(db) {
 
 export async function getSettings() {
     try {
+        console.log('📊 Récupération des paramètres');
         const db = await getDB();
         const settings = await db.get('SELECT * FROM settings WHERE id = 1');
         return {
@@ -118,6 +119,7 @@ export async function getSettings() {
 
 export async function updateSettings(newSettings) {
     try {
+        console.log(`⚙️ Mise à jour des paramètres: ${JSON.stringify(newSettings)}`);
         const db = await getDB();
         await db.run(
             `UPDATE settings SET
@@ -188,7 +190,7 @@ export async function getDashboardData() {
         const db = await getDB();
         const [signals, orders, settings] = await Promise.all([
             db.all('SELECT * FROM signals ORDER BY timestamp DESC LIMIT 50').catch(() => []),
-            db.all('SELECT * FROM orders ORDER BY timestamp DESC LIMIT 50').catch(() => []),
+            db.all('SELECT * FROM orders ORDER BY timestamp DESC LIMit 50').catch(() => []),
             getSettings()
         ]);
         
@@ -206,5 +208,3 @@ export async function getDashboardData() {
         };
     }
 }
-
-
