@@ -14,13 +14,13 @@ try {
 
   // Créer le fichier s'il n'existe pas
   if (!fs.existsSync(DB_PATH)) {
-    fs.closeSync(fs.openSync(DB_PATH, 'w'));
+    fs.writeFileSync(DB_PATH, '');  // Correction de la création de fichier
     console.log(`📄 Fichier DB créé: ${DB_PATH}`);
   } else {
     console.log(`ℹ️ Fichier DB existant: ${DB_PATH}`);
   }
 
-  // Définir les permissions (nécessaire pour Railway)
+  // Définir les permissions
   if (isProduction) {
     fs.chmodSync(DB_PATH, 0o666);
     console.log(`🔒 Permissions définies: 0666`);
