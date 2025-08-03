@@ -1,13 +1,22 @@
-// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
-// © thequantscience
+//@version=5
+strategy(
+     title = 'DS Grid Spot Trading Algorithm V2 - The Quant Science', 
+     overlay = true,
+     calc_on_every_tick = true,
+     initial_capital = 10000, 
+     commission_type = strategy.commission.percent, 
+     commission_value = 0.10, 
+     pyramiding = 5,
+     default_qty_type = strategy.percent_of_equity,
+     close_entries_rule = 'ANY'
+     )
 
-//  ██████╗ ██████╗ ██╗██████╗     ███████╗██████╗  ██████╗ ████████╗     █████╗ ██╗      ██████╗  ██████╗ ██████╗ ██╗████████╗██╗  ██╗███╗   ███╗    ██╗   ██╗██████╗ 
-// ██╔════╝ ██╔══██╗██║██╔══██╗    ██╔════╝██╔══██╗██╔═══██╗╚══██╔══╝    ██╔══██╗██║     ██╔════╝ ██╔═══██╗██╔══██╗██║╚══██╔══╝██║  ██║████╗ ████║    ██║   ██║╚════██╗
-// ██║  ███╗██████╔╝██║██║  ██║    ███████╗██████╔╝██║   ██║   ██║       ███████║██║     ██║  ███╗██║   ██║██████╔╝██║   ██║   ███████║██╔████╔██║    ██║   ██║ █████╔╝
-// ██║   ██║██╔══██╗██║██║  ██║    ╚════██║██╔═══╝ ██║   ██║   ██║       ██╔══██║██║     ██║   ██║██║   ██║██╔══██╗██║   ██║   ██╔══██║██║╚██╔╝██║    ╚██╗ ██╔╝██╔═══╝ 
-// ╚██████╔╝██║  ██║██║██████╔╝    ███████║██║     ╚██████╔╝   ██║       ██║  ██║███████╗╚██████╔╝╚██████╔╝██║  ██║██║   ██║   ██║  ██║██║ ╚═╝ ██║     ╚████╔╝ ███████╗
-//  ╚═════╝ ╚═╝  ╚═╝╚═╝╚═════╝     ╚══════╝╚═╝      ╚═════╝    ╚═╝       ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝      ╚═══╝  ╚══════╝
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+// ... [Votre code d'origine] ...
+
+
+
+
+
 //@version=5
 strategy(
      title = 'DS Grid Spot Trading Algorithm V2 - The Quant Science', 
@@ -202,22 +211,7 @@ plot(grid_destroyed_ten, color = color.new(#fc3636, 80), linewidth = 10)
 
 
 
-// Alertes optimisées
-alertcondition(ta.cross(close, grid_5), 
-  title='Entrée Long', 
-  message='{"action":"entry","symbol":"{{ticker}}","side":"buy","price":{{close}}}')
-
-alertcondition(ta.crossover(close, exit_price), 
-  title='Sortie Position', 
-  message='{"action":"exit","symbol":"{{ticker}}","side":"sell"}')
-
-alertcondition(grid_destroyer and ta.crossunder(close, stop_level), 
-  title='Grid Destroyed', 
-  message='{"action":"grid_destroyed","symbol":"{{ticker}}"}')
-
-// ... [Le code original fourni] ...
-
-// Alertes optimisées pour le nouveau système
+// Alertes modifiées
 alertcondition(ta.cross(close, grid_6), 
   "Entry Grid 6", 
   '{"action":"entry","symbol":"{{ticker}}","level":6,"price":'+str.tostring(grid_6)+'}')
@@ -245,3 +239,4 @@ alertcondition(ta.crossover(close, exit_price),
 alertcondition(grid_destroyer and ta.crossunder(close, stop_level), 
   "Grid Destroyed", 
   '{"action":"destroy","symbol":"{{ticker}}"}')
+
