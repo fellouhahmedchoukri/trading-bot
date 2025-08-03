@@ -1,3 +1,4 @@
+import express from 'express';
 import { executeTrade } from './binance.js';
 import { logSignal, getDashboardData, updateSettings } from './db.js';
 import { authenticateWebhook } from './auth.js';
