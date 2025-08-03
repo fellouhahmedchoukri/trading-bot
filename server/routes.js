@@ -2,6 +2,11 @@ import express from 'express';
 import { executeTrade } from './binance.js';
 import { logSignal, getDashboardData, updateSettings } from './db.js';
 import { authenticateWebhook } from './auth.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export function setupRoutes(app) {
   // Webhook TradingView
@@ -37,20 +42,11 @@ export function setupRoutes(app) {
   });
   
   // Serveur de dashboard
-  app.use('/dashboard', express.static('dashboard/public'));
+  const dashboardPath = path.join(__dirname, '../dashboard/public');
+  app.use('/dashboard', express.static(dashboardPath));
+  
+  // Route pour servir l'index du dashboard
+  app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(dashboardPath, 'index.html'));
+  });
 }
-
-// Ajouter cette route pour le dashboard
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dashboard/public/index.html'));
-});
-
-// Mettre à jour la route API
-app.get('/api/dashboard', async (req, res) => {
-  try {
-    const data = await getDashboardData();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: 'Database error' });
-  }
-});
