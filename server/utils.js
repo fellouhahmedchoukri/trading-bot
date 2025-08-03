@@ -1,10 +1,11 @@
-import ws from 'ws';
+import ws from './websocket-fix.js';
+import { getDashboardData } from './db.js';
 
 let wss = null;
 
 export function initWebSocket(server) {
-  // Utilisation directe de ws.createWebSocketServer
-  wss = new ws.WebSocketServer({ server });
+  // Utilisation de la méthode de création alternative
+  wss = ws.createWebSocketServer({ server });
   
   wss.on('connection', (ws) => {
     sendDashboardUpdate(ws);
@@ -40,10 +41,6 @@ async function sendDashboardUpdate(ws) {
   }
 }
 
-// Import nécessaire
-import { getDashboardData } from './db.js';
-
-// Gestion des erreurs critiques
 process.on('uncaughtException', error => {
   console.error('CRITICAL ERROR:', error);
 });
