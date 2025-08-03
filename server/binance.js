@@ -101,7 +101,6 @@ async function binanceSignedRequest(endpoint, params) {
   }
 }
 
-// Fermer toutes les positions (version avancée)
 async function closeAllPositions(symbol, settings) {
   if (settings.tradingMode === 'futures') {
     await closeFuturesPositions(symbol);
@@ -111,7 +110,6 @@ async function closeAllPositions(symbol, settings) {
 }
 
 async function closeFuturesPositions(symbol) {
-  // 1. Fermer toutes les positions ouvertes
   const positionsEndpoint = '/fapi/v2/positionRisk';
   const positions = await binanceSignedRequest(positionsEndpoint, { symbol });
   
@@ -130,7 +128,6 @@ async function closeFuturesPositions(symbol) {
     }
   }
   
-  // 2. Annuler tous les ordres ouverts
   await binanceSignedRequest('/fapi/v1/allOpenOrders', {
     symbol,
     timestamp: Date.now()
@@ -138,7 +135,6 @@ async function closeFuturesPositions(symbol) {
 }
 
 async function closeSpotPositions(symbol) {
-  // 1. Vendre tous les actifs
   const asset = symbol.replace('USDT', '');
   const account = await binanceSignedRequest('/api/v3/account', { timestamp: Date.now() });
   const balance = account.balances.find(b => b.asset === asset);
@@ -155,15 +151,14 @@ async function closeSpotPositions(symbol) {
     await binanceSignedRequest('/api/v3/order', orderParams);
   }
   
-  // 2. Annuler tous les ordres ouverts
   await binanceSignedRequest('/api/v3/openOrders', {
     symbol,
     timestamp: Date.now()
   });
 }
 
-async function emergencyClose(symbol, settings) {
-  await closeAllPositions(symbol, settings);
+async function emergencyClose(signal, settings) {
+  await closeAllPositions(signal.symbol, settings);
   await logSignal({
     ...signal,
     action: 'emergency',
