@@ -1,5 +1,5 @@
 {
-  "mounts": {
-    "data": "/data"
-  }
+    "mounts": {
+        "data": "/data"
+    }
 }
