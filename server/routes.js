@@ -39,3 +39,18 @@ export function setupRoutes(app) {
   // Serveur de dashboard
   app.use('/dashboard', express.static('dashboard/public'));
 }
+
+// Ajouter cette route pour le dashboard
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dashboard/public/index.html'));
+});
+
+// Mettre à jour la route API
+app.get('/api/dashboard', async (req, res) => {
+  try {
+    const data = await getDashboardData();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Database error' });
+  }
+});
