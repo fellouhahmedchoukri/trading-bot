@@ -1,5 +1,47 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
+import path from 'path';
+import fs from 'fs';
+
+// Chemin dynamique pour la base de données
+const isProduction = process.env.NODE_ENV === 'production';
+const DB_DIR = isProduction ? '/data' : path.resolve(process.cwd());
+const DB_FILENAME = 'trading.db';
+const DB_PATH = path.join(DB_DIR, DB_FILENAME);
+
+// Créer le répertoire si nécessaire
+if (isProduction && !fs.existsSync(DB_DIR)) {
+  try {
+    fs.mkdirSync(DB_DIR, { recursive: true });
+    console.log(`📂 Dossier créé: ${DB_DIR}`);
+  } catch (err) {
+    console.error(`❌ Erreur création dossier: ${err.message}`);
+  }
+}
+
+const sqlite3Verbose = sqlite3.verbose();
+let dbInstance = null;
+
+async function getDB() {
+  if (!dbInstance) {
+    try {
+      dbInstance = await open({
+        filename: DB_PATH,
+        driver: sqlite3Verbose.Database
+      });
+      console.log(`📊 Base de données connectée: ${DB_PATH}`);
+      await initDB(dbInstance);
+    } catch (error) {
+      console.error('❌ Erreur de connexion à la base de données:', error);
+      throw error;
+    }
+  }
+  return dbInstance;
+}
+
+// ... le reste du fichier reste inchangé ...
+import sqlite3 from 'sqlite3';
+import { open } from 'sqlite';
 
 const sqlite3Verbose = sqlite3.verbose();
 const DB_PATH = process.env.DB_PATH || './trading.db';
@@ -174,3 +216,4 @@ export async function getDashboardData() {
     };
   }
 }
+
