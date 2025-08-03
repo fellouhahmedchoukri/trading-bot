@@ -1,4 +1,5 @@
 import WebSocket from 'ws';
+import { getDashboardData } from './db.js';
 
 let wss = null;
 
@@ -39,10 +40,6 @@ async function sendDashboardUpdate(ws) {
   }
 }
 
-// Ajoutez cette fonction si manquante
-import { getDashboardData } from './db.js';
-
-// Gestion des erreurs critiques
 process.on('uncaughtException', error => {
   console.error('CRITICAL ERROR:', error);
 });
