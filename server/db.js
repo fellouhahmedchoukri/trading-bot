@@ -207,6 +207,4 @@ export async function getDashboardData() {
     }
 }
 
-// Dans server/db.js
-console.log(`📊 Récupération des paramètres`);
-console.log(`⚙️ Mise à jour des paramètres: ${JSON.stringify(newSettings)}`);
+
