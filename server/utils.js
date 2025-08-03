@@ -1,5 +1,6 @@
 import ws from 'ws';
 const { WebSocketServer } = ws;
+import { getDashboardData } from './db.js';
 
 let wss = null;
 
@@ -40,10 +41,6 @@ async function sendDashboardUpdate(ws) {
   }
 }
 
-// Import nécessaire
-import { getDashboardData } from './db.js';
-
-// Gestion des erreurs critiques
 process.on('uncaughtException', error => {
   console.error('CRITICAL ERROR:', error);
 });
