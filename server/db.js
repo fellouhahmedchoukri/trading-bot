@@ -1,3 +1,28 @@
+import sqlite3Module from 'sqlite3';  // Changé le nom de l'import
+import { open } from 'sqlite';
+import path from 'path';
+import fs from 'fs';
+
+// Chemin dynamique pour la base de données
+const isProduction = process.env.NODE_ENV === 'production';
+const DB_DIR = isProduction ? '/data' : path.resolve(process.cwd());
+const DB_FILENAME = 'trading.db';
+const DB_PATH = path.join(DB_DIR, DB_FILENAME);
+
+// Créer le répertoire si nécessaire
+if (isProduction && !fs.existsSync(DB_DIR)) {
+  try {
+    fs.mkdirSync(DB_DIR, { recursive: true });
+    console.log(`📂 Dossier créé: ${DB_DIR}`);
+  } catch (err) {
+    console.error(`❌ Erreur création dossier: ${err.message}`);
+  }
+}
+
+const sqlite3Verbose = sqlite3Module.verbose();  // Utilisation du nouveau nom
+let dbInstance = null;
+
+// ... le reste du code reste inchangé en utilisant sqlite3Module partout ...
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import path from 'path';
@@ -216,4 +241,5 @@ export async function getDashboardData() {
     };
   }
 }
+
 
