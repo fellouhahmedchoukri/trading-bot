@@ -1,10 +1,10 @@
-import { WebSocketServer } from './ws-compat.js';
-import { getDashboardData } from './db.js';
+import ws from 'ws';
 
 let wss = null;
 
 export function initWebSocket(server) {
-  wss = new WebSocketServer({ server });
+  // Utilisation directe de ws.createWebSocketServer
+  wss = new ws.WebSocketServer({ server });
   
   wss.on('connection', (ws) => {
     sendDashboardUpdate(ws);
@@ -17,14 +17,14 @@ export function broadcastDashboardUpdate() {
   if (!wss || wss.clients.size === 0) return;
   
   getDashboardData().then(data => {
-    wss.clients.forEach(client => {
+    for (const client of wss.clients) {
       if (client.readyState === 1) { // 1 = OPEN
         client.send(JSON.stringify({
           type: 'dashboard_update',
           data
         }));
       }
-    });
+    }
   });
 }
 
@@ -40,6 +40,10 @@ async function sendDashboardUpdate(ws) {
   }
 }
 
+// Import nécessaire
+import { getDashboardData } from './db.js';
+
+// Gestion des erreurs critiques
 process.on('uncaughtException', error => {
   console.error('CRITICAL ERROR:', error);
 });
