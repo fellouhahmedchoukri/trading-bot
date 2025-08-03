@@ -1,12 +1,11 @@
-// server/utils.js - Version simplifiée sans WebSocket
 import { getDashboardData } from './db.js';
 
-// Fonction pour le broadcast (désactivée)
+// Fonction de broadcast désactivée
 export function broadcastDashboardUpdate() {
   console.log('WebSocket désactivé');
 }
 
-// Gestion des erreurs
+// Gestion des erreurs critiques
 process.on('uncaughtException', error => {
   console.error('CRITICAL ERROR:', error);
 });
