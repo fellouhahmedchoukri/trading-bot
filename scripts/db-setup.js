@@ -14,7 +14,7 @@ try {
 
   // Créer le fichier s'il n'existe pas
   if (!fs.existsSync(DB_PATH)) {
-    fs.writeFileSync(DB_PATH, '');  // Correction de la création de fichier
+    fs.writeFileSync(DB_PATH, '');
     console.log(`📄 Fichier DB créé: ${DB_PATH}`);
   } else {
     console.log(`ℹ️ Fichier DB existant: ${DB_PATH}`);
@@ -22,8 +22,12 @@ try {
 
   // Définir les permissions
   if (isProduction) {
-    fs.chmodSync(DB_PATH, 0o666);
-    console.log(`🔒 Permissions définies: 0666`);
+    try {
+      fs.chmodSync(DB_PATH, 0o666);
+      console.log(`🔒 Permissions définies: 0666`);
+    } catch (chmodError) {
+      console.warn('⚠️ Impossible de modifier les permissions:', chmodError.message);
+    }
   }
   
   console.log('✅ Configuration DB terminée');
