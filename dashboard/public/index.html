@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Trading Bot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Grid Trading Bot</h1>
+      <div class="status-indicators">
+        <span id="mode-indicator" class="indicator test">TEST</span>
+        <span id="type-indicator" class="indicator spot">SPOT</span>
+        <span id="connection-status" class="indicator connected">CONNECTÉ</span>
+      </div>
+    </header>
+
+    <section class="controls">
+      <h2>Configuration</h2>
+      <div class="control-group">
+        <label>
+          Environnement:
+          <select id="environment-select">
+            <option value="test">Test</option>
+            <option value="prod">Production</option>
+          </select>
+        </label>
+        
+        <label>
+          Type de Trading:
+          <select id="trading-type-select">
+            <option value="spot">Spot</option>
+            <option value="futures">Futures</option>
+          </select>
+        </label>
+        
+        <label>
+          Taille Position (USDT):
+          <input type="number" id="position-size" min="10" step="10" value="100">
+        </label>
+        
+        <button id="save-settings">Appliquer</button>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <div class="panel">
+        <h2>Signaux Réçus</h2>
+        <div class="table-container">
+          <table id="signals-table">
+            <thead>
+              <tr>
+                <th>Heure</th>
+                <th>Action</th>
+                <th>Symbole</th>
+                <th>Niveau</th>
+                <th>Prix</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="panel">
+        <h2>Ordres Exécutés</h2>
+        <div class="table-container">
+          <table id="orders-table">
+            <thead>
+              <tr>
+                <th>Heure</th>
+                <th>Type</th>
+                <th>Symbole</th>
+                <th>Side</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
