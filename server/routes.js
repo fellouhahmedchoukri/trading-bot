@@ -12,6 +12,11 @@ export function setupRoutes(app) {
   // Middleware pour parser le JSON
   app.use(express.json());
 
+  // Endpoint de santé pour Railway - DOIT être en premier
+  app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+  });
+
   // Redirection de la racine vers le dashboard
   app.get('/', (req, res) => {
     res.redirect('/dashboard');
@@ -19,12 +24,15 @@ export function setupRoutes(app) {
 
   // Webhook TradingView (sécurisé)
   app.post('/webhook', authenticateWebhook, async (req, res) => {
+    console.log('Webhook reçu:', JSON.stringify(req.body, null, 2));
     try {
       // Journalisation sécurisée (sans secret)
       await logSignal(req.body);
+      console.log('Signal loggé en base');
       
       // Exécution du trade
       const tradeResult = await executeTrade(req.body);
+      console.log('Trade exécuté:', tradeResult);
       
       res.status(200).json({
         status: 'success',
@@ -82,11 +90,6 @@ export function setupRoutes(app) {
   // Gestion des routes SPA pour le dashboard
   app.get('/dashboard*', (req, res) => {
     res.sendFile(path.join(dashboardPath, 'index.html'));
-  });
-  
-  // Endpoint de santé pour Railway
-  app.get('/health', (req, res) => {
-    res.status(200).send('OK');
   });
   
   // Gestion des erreurs 404
